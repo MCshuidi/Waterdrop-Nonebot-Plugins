@@ -32,6 +32,6 @@ class Player:
         self.player_items.append(item)
     def get_item(self , item_name : str) -> Item | None:
         for i in range(len(self.player_items)):
-            if self.player_items[i].get_name() == item_name:
+            if self.player_items[i].item_name == item_name:
                 return self.player_items.pop(i)
         return None
