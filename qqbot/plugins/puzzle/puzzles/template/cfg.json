@@ -1,0 +1,20 @@
+{
+    "Public" : false,
+    "Title" : "",
+    "Author" : "",
+    "Author_ID" : -1,
+    "Puzzle_ID" : 1,
+    "Question" : "",
+    "Images" : [
+    ],
+    "Hint_Titles" : [
+    ],
+    "Hints" : [
+    ],
+    "Released_Hints" : 0,
+    "Answer" : "",
+    "Reward" : 0,
+    "Solved" : false,
+    "Solved_ID" : 0,
+    "Solution" : ""
+}
