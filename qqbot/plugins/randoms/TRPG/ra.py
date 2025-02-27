@@ -5,7 +5,7 @@ from nonebot.adapters.onebot.v11 import MessageEvent, GroupMessageEvent, Message
 
 import re
 
-ra_dice = on_command("ra" , force_whitespace = "")
+ra_dice = on_command("ra")
 
 skill_re = re.compile(r".(ra)(.*?)(\d*)$")
 
