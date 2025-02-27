@@ -14,10 +14,10 @@ result_texts = [
 ]
 
 @ra_dice.handle()
-async def jrrp_handle(bot : Bot , event : MessageEvent | GroupMessageEvent):
+async def ra_handle(bot : Bot , event : MessageEvent | GroupMessageEvent):
+    print(await bot.get_stranger_info(user_id = event.get_user_id()))
     text = event.get_plaintext()
     result = re.match(skill_re , text)
     if result == None:
         return
-    print(await bot.get_stranger_info(user_id = event.get_user_id()))
     #ra_dice.finish(f"正在为[{bot.}]进行技能[{}:{}]的检定。\n1D100={}/{} \n{}")
