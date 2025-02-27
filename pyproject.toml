@@ -9,8 +9,8 @@ requires-python = ">=3.9, <4.0"
 adapters = [
     { name = "OneBot V11", module_name = "nonebot.adapters.onebot.v11" }
 ]
-plugins = [
-    "qqbot/plugins",
+plugins = []
+plugin_dirs = [
     "qqbot/plugins/default",
     "qqbot/plugins/default/api",
     "qqbot/plugins/puzzle",
@@ -18,5 +18,4 @@ plugins = [
     "qqbot/plugins/randoms/trpg",
     "qqbot/plugins/text"
 ]
-plugin_dirs = ["qqbot/plugins"]
 builtin_plugins = []
