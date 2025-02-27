@@ -44,9 +44,9 @@ result_texts = [
 @ra_dice.handle()
 async def ra_handle(bot : Bot , event : MessageEvent | GroupMessageEvent):
     text = event.get_plaintext()
-    result = re.match(skill_re , text)
+    result = re.match(skill_re , text).groups()
     if result == None:
-        result = re.match(skill2_re , text)
+        result = re.match(skill2_re , text).groups()
         if result == None:
             return
         type = result[2]
