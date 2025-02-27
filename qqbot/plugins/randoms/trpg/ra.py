@@ -9,8 +9,8 @@ import re
 
 ra_dice = on_command("ra")
 
-skill_re = re.compile(r".(ra)(.*?)(\d*)$")
-skill2_re = re.compile(r".(ra)(.*)((\d*)(.*))$")
+skill_re = re.compile(r".(ra)(\s*)(.*?)(\d+)$")
+skill2_re = re.compile(r".(ra)(\s*)(.*?)((\d+)(.+))$")
 
 result_texts = [
     # 大成功
@@ -43,18 +43,17 @@ result_texts = [
 
 @ra_dice.handle()
 async def ra_handle(bot : Bot , event : MessageEvent | GroupMessageEvent):
-    #print(await bot.get_stranger_info(user_id = event.get_user_id()))
     text = event.get_plaintext()
     result = re.match(skill_re , text)
     if result == None:
         result = re.match(skill2_re , text)
         if result == None:
             return
-        type = result[1]
-        point = int(result[3])
+        type = result[2]
+        point = int(result[4])
     else:
-        type = result[1]
-        point = int(result[2])
+        type = result[2]
+        point = int(result[3])
     rnd.seed(time.time())
     dice = rnd.randint(1 , 100)
     if dice <= 5:
@@ -69,4 +68,4 @@ async def ra_handle(bot : Bot , event : MessageEvent | GroupMessageEvent):
         r_type = rnd.choice(result_texts[5])
     else:
         r_type = rnd.choice(result_texts[4])
-    ra_dice.finish(f"正在为[{bot.get_stranger_info(user_id = event.get_user_id())}]进行技能[{type}:{point}]的检定。\n1D100={dice}/{point} \n{r_type}")
+    ra_dice.finish(f"正在为[{bot.get_stranger_info(user_id = event.get_user_id())["nick"]}]进行技能[{type}:{point}]的检定。\n1D100={dice}/{point} \n{r_type}")
