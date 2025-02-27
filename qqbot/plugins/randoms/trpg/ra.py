@@ -68,4 +68,4 @@ async def ra_handle(bot : Bot , event : MessageEvent | GroupMessageEvent):
         r_type = rnd.choice(result_texts[5])
     else:
         r_type = rnd.choice(result_texts[4])
-    await ra_dice.finish(f"正在为[{(await bot.get_stranger_info(user_id = int(event.get_user_id())))["nick"]}]进行技能[{type}:{point}]的检定。\n1D100={dice}/{point} \n{r_type}")
+    await ra_dice.finish(f"正在为[{(await bot.get_stranger_info(user_id = int(event.get_user_id())))["nick"]}]进行技能[{type.strip()}:{point}]的检定。\n1D100={dice}/{point} \n{r_type}")
