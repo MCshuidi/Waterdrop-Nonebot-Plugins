@@ -10,7 +10,7 @@ import psutil
 ST_TIME = datetime.datetime.now()
 OFFIST = datetime.timedelta(hours = 0)
 
-status = on_startswith("status" , force_whitespace = "", priority=10, block=False)
+status = on_command("status" , force_whitespace = "", priority=10, block=False)
 
 @status.handle()
 async def status_handle(event : MessageEvent | GroupMessageEvent):
