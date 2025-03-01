@@ -9,8 +9,9 @@ import re
 
 ra_dice = on_command("ra")
 
-skill_re = re.compile(r".(ra)(\s*)(.*?)(\d+)$")
+skill1_re = re.compile(r".(ra)(\s*)(.*?)(\d+)$")
 skill2_re = re.compile(r".(ra)(\s*)(.*?)((\d+)(.+))$")
+skill3_re = re.compile(r".(ra)(\s*)(.*)")
 
 result_texts = [
     # 大成功
@@ -44,14 +45,19 @@ result_texts = [
 @ra_dice.handle()
 async def ra_handle(bot : Bot , event : MessageEvent | GroupMessageEvent):
     text = event.get_plaintext()
-    result = re.match(skill_re , text).groups()
+    result = re.match(skill1_re , text)
     if result == None:
-        result = re.match(skill2_re , text).groups()
+        result = re.match(skill2_re , text)
         if result == None:
-            return
-        type = result[2]
-        point = int(result[4])
+            result = re.match(skill3_re , text).groups()
+            type = result[2]
+            point = 50
+        else:
+            result = result.groups()
+            type = result[2]
+            point = int(result[4])
     else:
+        result = result.groups()
         type = result[2]
         point = int(result[3])
     rnd.seed(time.time())

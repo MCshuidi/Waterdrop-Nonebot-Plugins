@@ -63,7 +63,7 @@ async def choose_handle(event : MessageEvent | GroupMessageEvent):
     if type(item) == tuple:
         item = rnd.randint(item[0] , item[1])
     if item[0] == "$":
-        if os.path.exists(r"%s\%s.txt"%(LIB_FOLDER , item[1:].strip())):
+        if os.path.exists(r"%s/%s.txt"%(LIB_FOLDER , item[1:].strip())):
             f = open(os.path.join(LIB_FOLDER , "%s.txt"%(item[1:])) , encoding="utf-8")
             values = f.read().strip().split("\n")
             f.close()
