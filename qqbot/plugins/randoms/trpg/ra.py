@@ -9,8 +9,8 @@ import re
 
 ra_dice = on_command("ra")
 
-skill1_re = re.compile(r".(ra)(\s*)(.*?)((\d+)(-\d+)?)$")
-skill2_re = re.compile(r".(ra)(\s*)(.*?)(((\d+)(-\d+)?)(.+))$")
+skill1_re = re.compile(r".(ra)(\s*)(.*?)((\d+)(-\d+|\+\d+)?)$")
+skill2_re = re.compile(r".(ra)(\s*)(.*?)(((\d+)(-\d+|\+\d+)?)(.+))$")
 skill3_re = re.compile(r".(ra)(\s*)(.*)")
 
 result_texts = [
