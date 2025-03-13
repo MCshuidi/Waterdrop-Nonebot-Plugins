@@ -7,7 +7,7 @@ import os
 import time
 import random as rnd
 
-LIB_FOLDER = os.path.join(os.path.dirname(__file__) , "libs")
+LIB_FOLDER = os.path.join(os.path.dirname(__file__) , "libs" , "choose")
 
 choose = on_command("random", force_whitespace = " ", priority=10, block=False)
 
