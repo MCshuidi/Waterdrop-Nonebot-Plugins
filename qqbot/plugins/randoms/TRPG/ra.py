@@ -9,8 +9,8 @@ import re
 
 ra_dice = on_command("ra")
 
-skill1_re = re.compile(r".(ra)(\s*)(.*?)(\d+)$")
-skill2_re = re.compile(r".(ra)(\s*)(.*?)((\d+)(.+))$")
+skill1_re = re.compile(r".(ra)(\s*)(.*?)((\d+)(-\d+)?)$")
+skill2_re = re.compile(r".(ra)(\s*)(.*?)(((\d+)(-\d+)?)(.+))$")
 skill3_re = re.compile(r".(ra)(\s*)(.*)")
 
 result_texts = [
@@ -55,23 +55,23 @@ async def ra_handle(bot : Bot , event : MessageEvent | GroupMessageEvent):
         else:
             result = result.groups()
             type = result[2]
-            point = int(result[4])
+            point = eval(result[4])
     else:
         result = result.groups()
         type = result[2]
-        point = int(result[3])
+        point = eval(result[3])
     rnd.seed(time.time())
     dice = rnd.randint(1 , 100)
     if dice <= 5:
         r_type = rnd.choice(result_texts[0])
+    elif dice >= 96:
+        r_type = rnd.choice(result_texts[5])
     elif dice <= point // 5:
         r_type = rnd.choice(result_texts[1])
     elif dice <= point // 2:
         r_type = rnd.choice(result_texts[2])
     elif dice <= point:
         r_type = rnd.choice(result_texts[3])
-    elif dice >= 96:
-        r_type = rnd.choice(result_texts[5])
     else:
         r_type = rnd.choice(result_texts[4])
-    await ra_dice.finish(f"正在为[{(await bot.get_stranger_info(user_id = int(event.get_user_id())))["nick"]}]进行技能[{type.strip()}:{point}]的检定。\n1D100={dice}/{point} \n{r_type}")
+    await ra_dice.finish(f"正在为[{(await bot.get_stranger_info(user_id = int(event.get_user_id())))["nick"]}]进行技能[{type.strip()}:{result[3]}]的检定。\n1D100={dice}/{point} \n{r_type}")
