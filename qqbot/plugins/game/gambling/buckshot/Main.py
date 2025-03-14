@@ -8,5 +8,9 @@ MAX_ALL_HEART = 12
 
 shoot_command = on_command("shoot" , aliases = ["射击" , "开枪"] , force_whitespace = None)
 use_item_command = on_command("use" , aliases = ["使用"] , force_whitespace = None)
+check_table_command = on_command("view" , aliases = ["查看局势"] , force_whitespace = None)
 check_item_command = on_command("check" , aliases = ["查询"] , force_whitespace = None)
+
+tables = {}
+
 

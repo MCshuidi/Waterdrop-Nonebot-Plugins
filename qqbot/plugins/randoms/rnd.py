@@ -3,9 +3,15 @@ from nonebot.rule import *
 from nonebot.internal.adapter import *
 from nonebot.adapters.onebot.v11 import MessageEvent, GroupMessageEvent, MessageSegment
 
+import re
 import os
 import time
 import random as rnd
+
+pattern_obj_1 = re.compile(r"(.+?)(\s?)")
+pattern_obj_2 = re.compile(r"\"(.+?)\"")
+
+pattern_dice = re.compile(r".*(\[(1d(\d+(\+\d+)?))\]).*")
 
 LIB_FOLDER = os.path.join(os.path.dirname(__file__) , "libs" , "choose")
 
@@ -15,45 +21,20 @@ choose = on_command("random", force_whitespace = " ", priority=10, block=False)
 async def choose_handle(event : MessageEvent | GroupMessageEvent):
     rnd.seed(time.time())
     ori = event.get_plaintext()[8:].strip() + ' '
-    tmp = ""
-    is_str = False
     items = []
     i = 0
     while i < len(ori):
-        if ori[i] == '"' and tmp == "":
-            is_str = True
-            i += 1
+        res = re.match(pattern_obj_1 , ori[i:])
+        if res is not None:
+            items.append(res[0])
+            i += len(res.group())
             continue
-        if ori[i] == '"' and ori[i + 1] == ' ':
-            items.append(tmp)
-            i += 2
-            is_str = False
-            tmp = ""
+        res = re.match(pattern_obj_2 , ori[i:])
+        if res is not None:
+            items.append(res[0])
+            i += len(res.group())
             continue
-        if ori[i] == '"' and ori[i + 1] != ' ':
-            if isinstance(event , GroupMessageEvent):
-                await choose.finish(MessageSegment.at(event.user_id) + " 的输入有误！")
-            else:
-                await choose.finish("输入有误！")
-        if ori[i] == '\\' and ori[i + 1] == '"' and is_str:
-            tmp += '"'
-            i += 2
-            continue
-        if ori[i] == ' ' and is_str:
-            tmp += ' '
-            i += 1  
-            continue
-        if ori[i] == ' ':
-            if '-' in tmp:
-                tmp = tmp.split('-')
-                items.append((int(tmp[0]) , int(tmp[1])))
-            else:
-                items.append(tmp)
-            tmp = ""
-            i += 1
-            continue
-        tmp += ori[i]
-        i += 1
+        await choose.finish("输入有误！")
     if len(items) == 0:
         if isinstance(event , GroupMessageEvent):
             await choose.finish(MessageSegment.at(event.user_id) + " 的输入有误！")
@@ -68,6 +49,9 @@ async def choose_handle(event : MessageEvent | GroupMessageEvent):
             values = f.read().strip().split("\n")
             f.close()
             item = values[rnd.randint(0 , len(values) - 1)]
+    if re.match(pattern_dice , item):
+        res = re.match(pattern_dice , item)
+        item.replace(res[0] , rnd.randint(1 , eval(res[2])))
     if isinstance(event , GroupMessageEvent):
         await choose.finish(MessageSegment.at(event.user_id) + " 的随机选择的结果为：\n%s"%(item))
     else:
