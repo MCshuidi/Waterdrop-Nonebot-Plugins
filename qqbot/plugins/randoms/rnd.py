@@ -8,7 +8,7 @@ import os
 import time
 import random as rnd
 
-pattern_obj_1 = re.compile(r"(.+?)(\s?)")
+pattern_obj_1 = re.compile(r"(.+?)(\s)|(.+)")
 pattern_obj_2 = re.compile(r"\"(.+?)\"")
 
 pattern_dice = re.compile(r".*(\[(1d(\d+(\+\d+)?))\]).*")
@@ -26,9 +26,14 @@ async def choose_handle(event : MessageEvent | GroupMessageEvent):
     while i < len(ori):
         res = re.match(pattern_obj_1 , ori[i:])
         if res is not None:
-            items.append(res[0])
-            i += len(res.group())
-            continue
+            if res[0] is not None:
+                items.append(res[0])
+                i += len(res.group())
+                continue
+            else:
+                items.append(res[2])
+                i += len(res.group())
+                continue
         res = re.match(pattern_obj_2 , ori[i:])
         if res is not None:
             items.append(res[0])
