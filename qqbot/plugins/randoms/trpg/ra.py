@@ -51,14 +51,17 @@ async def ra_handle(bot : Bot , event : MessageEvent | GroupMessageEvent):
         if result == None:
             result = re.match(skill3_re , text).groups()
             type = result[2]
+            pt = "50"
             point = 50
         else:
             result = result.groups()
             type = result[2]
+            pt = result[4]
             point = eval(result[4])
     else:
         result = result.groups()
         type = result[2]
+        pt = result[3]
         point = eval(result[3])
     rnd.seed(time.time())
     dice = rnd.randint(1 , 100)
