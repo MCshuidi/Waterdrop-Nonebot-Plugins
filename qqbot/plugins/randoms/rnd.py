@@ -56,8 +56,8 @@ async def choose_handle(event : MessageEvent | GroupMessageEvent):
             item = values[rnd.randint(0 , len(values) - 1)]
     if re.match(pattern_dice , item):
         res = re.match(pattern_dice , item).groups()
-        item.replace(res[0] , str(rnd.randint(1 , eval(res[2]))))
-        item.replace("\\n" , "\n")
+        item = item.replace(res[0] , str(rnd.randint(1 , eval(res[2]))))
+        item = item.replace("\\n" , "\n")
     if isinstance(event , GroupMessageEvent):
         await choose.finish(MessageSegment.at(event.user_id) + " 的随机选择的结果为：\n%s"%(item))
     else:
