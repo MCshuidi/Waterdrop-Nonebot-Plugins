@@ -50,13 +50,14 @@ async def choose_handle(event : MessageEvent | GroupMessageEvent):
         item = rnd.randint(item[0] , item[1])
     if item[0] == "$":
         if os.path.exists(r"%s/%s.txt"%(LIB_FOLDER , item[1:].strip())):
-            f = open(os.path.join(LIB_FOLDER , "%s.txt"%(item[1:])) , encoding="utf-8")
+            f = open(os.path.join(LIB_FOLDER , "%s.txt"%(item[1:].strip())) , encoding="utf-8")
             values = f.read().strip().split("\n")
             f.close()
             item = values[rnd.randint(0 , len(values) - 1)]
     if re.match(pattern_dice , item):
-        res = re.match(pattern_dice , item)
-        item.replace(res[0] , rnd.randint(1 , eval(res[2])))
+        res = re.match(pattern_dice , item).groups()
+        item.replace(res[0] , str(rnd.randint(1 , eval(res[2]))))
+        item.replace("\\n" , "\n")
     if isinstance(event , GroupMessageEvent):
         await choose.finish(MessageSegment.at(event.user_id) + " 的随机选择的结果为：\n%s"%(item))
     else:
