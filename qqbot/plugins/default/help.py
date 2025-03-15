@@ -56,9 +56,12 @@ async def help_handle(event : MessageEvent | GroupMessageEvent):
             status = r.hget(uid_whitelist , g_status.decode()[1:])
             if   g2_status is not None and g2_status.decode() == '+' and not (status is None or status.decode() == '+'):
                 await help_cmd.finish("Permission denied.[=+]")
-            elif g2_status is not None and g2_status.decode() == '*' and not (status is not None and status.decode() == '+'):
+            elif g2_status is not None and g2_status.decode() == '*' and not (status is not None and (status.decode() == '+' or status.decode() == '*')):
                 await help_cmd.finish("Permission denied.[=*]")
-        perfix = r.hget("g_symbols" , event.group_id)
+        if isinstance(event , GroupMessageEvent):
+            perfix = r.hget("g_symbols" , event.group_id)
+        else:
+            perfix = r.hget("u_symbols" , event.get_user_id())
         if perfix is None:
             perfix = "!"
         else:
